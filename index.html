@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Express 파일 업로드 및 엔드포인트 출력</title>
+  </head>
+  <body>
+    <script type="module" src="func.mjs"></script> 
+    <h1>Express 파일 업로드 및 엔드포인트 출력 페이지</h1>
+    <form ref='uploadForm' 
+      id='uploadForm' 
+      action='/upload' 
+      method='post' 
+      encType="multipart/form-data">
+        <input type="file" name="uploadedFile" />
+        <input type='submit' value='Upload!' />
+    </form>
+    <div id="endpoints">
+      <h2>엔드포인트 목록</h2>
+      <ul id="endpoint-list"></ul>
+    </div>
+
+    <script>
+      const endpointList = document.getElementById('endpoint-list');
+      document.getElementById('uploadForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        fetch('/upload', {
+          method: 'POST',
+          body: new FormData(document.getElementById('uploadForm'))
+        })
+        .then(response => response.text())
+        .then(data => {
+          endpointList.innerHTML = data;
+        });
+      });
+    </script>
+  </body>
+</html>
